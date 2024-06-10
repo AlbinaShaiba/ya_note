@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from django.conf import settings
 from django.db import models
 
@@ -27,6 +29,7 @@ class Note(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
+    date = models.DateField(default=datetime.today)
 
     def __str__(self):
         return self.title
@@ -36,3 +39,7 @@ class Note(models.Model):
             max_slug_length = self._meta.get_field('slug').max_length
             self.slug = slugify(self.title)[:max_slug_length]
         super().save(*args, **kwargs)
+
+
+    class Meta:
+        ordering = ('-date',)
