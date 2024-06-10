@@ -21,7 +21,7 @@ class TestNoteCreation(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.url = reverse('notes:detail', args=(cls.NOTE_SLUG,))
+        cls.url = reverse('notes:home')
         cls.user = User.objects.create(username='Юзер')
         cls.auth_client = Client()
         cls.auth_client.force_login(cls.user)
@@ -38,3 +38,13 @@ class TestNoteCreation(TestCase):
         notes_count = Note.objects.count()
         self.assertEqual(notes_count, 0)
         
+    def test_user_can_create_note(self):
+        self.auth_client.force_login(self.user)
+        self.auth_client.post(self.url, data=self.form_data)
+        notes_count = Note.objects.count()
+        print(self.auth_client)
+        print(self.form_data)
+        self.assertEqual(notes_count, 1)
+        note = Note.objects.get()
+        self.assertEqual(note.text, self.NOTE_TEXT)
+        self.assertEqual(note.author, self.user)
