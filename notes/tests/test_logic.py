@@ -9,6 +9,7 @@ from django.urls import reverse
 from notes.forms import WARNING
 from notes.models import Note
 
+
 User = get_user_model()
 
 
@@ -28,7 +29,6 @@ class TestNoteCreation(TestCase):
                          'slug': cls.SLUG,
                          'author': cls.user}
         
-
 
     def test_user_can_create_note(self):
         response = self.auth_client.post(self.url, data=self.form_data)
@@ -124,4 +124,3 @@ class TestNoteEditDelete(TestCase):
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
         assert response.status_code == HTTPStatus.NOT_FOUND
         self.assertEqual(Note.objects.count(), 1)
-
